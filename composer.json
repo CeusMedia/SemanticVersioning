@@ -1,0 +1,31 @@
+{
+    "name": "ceus-media/semantic-versioning",
+    "description": "Semantic Versioning",
+    "type": "library",
+    "license": [
+        "GPL-3.0-or-later"
+    ],
+    "authors": [
+        {
+            "name": "Christian Würker",
+            "email": "christian.wuerker@ceusmedia.de",
+            "homepage": "https://ceusmedia.de/",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "office@ceusmedia.de",
+        "jabber": "cwuerker@ceusmedia.de"
+    },
+    "minimum-stability": "dev",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "phpstan/phpstan": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "CeusMedia\\SemVer\\": "src"
+        }
+    }
+}

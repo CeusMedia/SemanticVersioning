@@ -7,3 +7,4 @@ Simple (and by now incomplete) implementation of [Semantic Versioning][1] in PHP
 ````composer require ceus-media/semantic-versioning````
 
 
+[1]: https://semver.org/

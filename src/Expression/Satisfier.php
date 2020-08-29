@@ -37,5 +37,6 @@ class Satisfier
 		if( !in_array( $strategy, self::STRATEGIES ) )
 			throw new InvalidArgumentException( 'Invalid strategy' );
 		$this->strategy	= $strategy;
+		return $this;
 	}
 }

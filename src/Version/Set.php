@@ -11,7 +11,7 @@ class Set
 	public function __construct( array $list = array() )
 	{
 		if( count( $list ) ){
-			foreach( self::fromList( $list ) as $item ){
+			foreach( self::fromList( $list )->getList() as $item ){
 				$this->list[]	= $item;
 			}
 		}
@@ -25,7 +25,7 @@ class Set
 
 	public function applyExpression( Expression $expression ): Set
 	{
-		$set	= new static();
+		$set	= new self();
 		foreach( $this->list as $version ){
 			if( $expression->checkVersion( $version ) )
 				$set->add( $version );
@@ -33,9 +33,9 @@ class Set
 		return $set;
 	}
 
-	public static function fromArray( array $array ): Set
+	public static function fromList( array $list ): Set
 	{
-		$set	= new static();
+		$set	= new self();
 		foreach( $list as $version ){
 			if( is_string( $version ) )
 				$version	= new Version( $version );
@@ -44,5 +44,10 @@ class Set
 			$set->add( $version );
 		}
 		return $set;
+	}
+
+	public function getList(): array
+	{
+		return $this->list;
 	}
 }

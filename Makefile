@@ -31,5 +31,12 @@ dev-test-syntax:
 	@find src -type f -print0 | xargs -0 -n1 xargs php -l
 
 dev-phpstan:
-	@vendor/bin/phpstan analyse src --level=5
+#	@vendor/bin/phpstan analyse src --level=5
+	@vendor/bin/phpstan analyse --configuration phpstan.neon --xdebug || true
+
+dev-phpstan-save-baseline:
+	@vendor/bin/phpstan analyse --configuration phpstan.neon --generate-baseline phpstan-baseline.neon || true
+
+dev-psalm:
+	@vendor/bin/psalm --show-info=true
 

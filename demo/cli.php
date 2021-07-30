@@ -7,10 +7,10 @@ require_once 'vendor/autoload.php';
  *	@see	https://github.com/vierbergenlars/php-semver
  */
 
-use CeusMedia\SemVer\Expression;
+use CeusMedia\SemVer\Constraint;
 use CeusMedia\SemVer\Version;
-use CeusMedia\SemVer\Expression\Range;
-use CeusMedia\SemVer\Expression\Satisfier;
+use CeusMedia\SemVer\Constraint\Range;
+use CeusMedia\SemVer\Constraint\Satisfier;
 
 $s	= new Satisfier();
 
@@ -39,7 +39,7 @@ print( 'equals: '.( $v1->isEqualTo( $v2 ) ? 'yes' : 'no' ).PHP_EOL );
 print( 'differs: '.( $v1->isDifferentFrom( $v2 ) ? 'yes' : 'no' ).PHP_EOL );
 print( '---------------------------------'.PHP_EOL );
 */
-$e = new Expression( '^1.2 || ^1.3 >1.2' );
+$e = new Constraint( '^1.2 || ^1.3 >1.2' );
 print_r( $e );
 /*
 Satisfier::satisfies( $v, new Range( '^1' ) );

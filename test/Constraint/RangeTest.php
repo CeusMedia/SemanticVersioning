@@ -1,11 +1,11 @@
 <?php
 use CeusMedia\SemVer\Version;
-use CeusMedia\SemVer\Expression;
-use CeusMedia\SemVer\Expression\Range;
+use CeusMedia\SemVer\Constraint;
+use CeusMedia\SemVer\Constraint\Range;
 use PHPUnit\Framework\TestCase;
 
 /**
- *	@coversDefaultClass		CeusMedia\SemVer\Expression\Range
+ *	@coversDefaultClass		CeusMedia\SemVer\Constraint\Range
  */
 class RangeTest extends TestCase
 {
@@ -131,64 +131,64 @@ class RangeTest extends TestCase
 	}
 
 	/**
-	 *	@covers		::parseExpression
+	 *	@covers		::parseConstraint
 	 */
-	public function testParseExpression()
+	public function testParseConstraint()
 	{
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2' ) );
-		$actual	= Range::parseExpression( '>=2');
+		$actual	= Range::parseConstraint( '>=2');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setGreaterThan( new Version( '2' ) );
-		$actual	= Range::parseExpression( '>2');
+		$actual	= Range::parseConstraint( '>2');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtMost( new Version( '2' ) );
-		$actual	= Range::parseExpression( '<=2');
+		$actual	= Range::parseConstraint( '<=2');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setLowerThan( new Version( '2' ) );
-		$actual	= Range::parseExpression( '<2');
+		$actual	= Range::parseConstraint( '<2');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2' ) )
 			->setLowerThan( new Version( '3' ) );
-		$actual	= Range::parseExpression( '^2');
+		$actual	= Range::parseConstraint( '^2');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2.3' ) )
 			->setLowerThan( new Version( '2.4' ) );
-		$actual	= Range::parseExpression( '^2.3');
+		$actual	= Range::parseConstraint( '^2.3');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2.3.4' ) )
 			->setLowerThan( new Version( '2.3.5' ) );
-		$actual	= Range::parseExpression( '^2.3.4');
+		$actual	= Range::parseConstraint( '^2.3.4');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2' ) )
 			->setAtMost( new Version( '3' ) );
-		$actual	= Range::parseExpression( '2-3');
+		$actual	= Range::parseConstraint( '2-3');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2.3.4' ) )
 			->setAtMost( new Version( '3.4.5' ) );
-		$actual	= Range::parseExpression( '2.3.4-3.4.5');
+		$actual	= Range::parseConstraint( '2.3.4-3.4.5');
 		$this->assertEquals( $expected, $actual );
 
 		$expected	= ( new Range() )
 			->setAtLeast( new Version( '2.3.4' ) )
 			->setAtMost( new Version( '2.3.4' ) );
-		$actual	= Range::parseExpression( '2.3.4');
+		$actual	= Range::parseConstraint( '2.3.4');
 		$this->assertEquals( $expected, $actual );
 	}
 

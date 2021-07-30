@@ -1,7 +1,7 @@
 <?php
 namespace CeusMedia\SemVer\Version;
 
-use CeusMedia\SemVer\Expression;
+use CeusMedia\SemVer\Constraint;
 use CeusMedia\SemVer\Version;
 
 class Set
@@ -23,11 +23,11 @@ class Set
 		return $this;
 	}
 
-	public function applyExpression( Expression $expression ): Set
+	public function applyConstraint( Constraint $constraint ): Set
 	{
 		$set	= new self();
 		foreach( $this->list as $version ){
-			if( $expression->checkVersion( $version ) )
+			if( $constraint->checkVersion( $version ) )
 				$set->add( $version );
 		}
 		return $set;

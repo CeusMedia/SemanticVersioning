@@ -30,6 +30,11 @@ class Version
 		return $this->render();
 	}
 
+	public function getBuild(): int
+	{
+		return $this->build;
+	}
+
 	public function getMajor(): int
 	{
 		return $this->major;
@@ -48,81 +53,6 @@ class Version
 	public function getPreRelease(): string
 	{
 		return $this->preRelease;
-	}
-
-	public function getBuild(): int
-	{
-		return $this->build;
-	}
-
-	public function isAtLeast( Version $version ): bool
-	{
-		return VersionComparator::isAtLeast( $this, $version );
-	}
-
-	public function isAtMost( Version $version ): bool
-	{
-		return VersionComparator::isAtMost( $this, $version );
-	}
-
-	public function isDifferentFrom( Version $version ): bool
-	{
-		return VersionComparator::differs( $this, $version );
-	}
-
-	public function isEqualTo( Version $version ): bool
-	{
-		return VersionComparator::equals( $this, $version );
-	}
-
-	public function isGreaterThan( Version $version ): bool
-	{
-		return VersionComparator::isGreater( $this, $version );
-	}
-
-	public function isLowerThan( Version $version ): bool
-	{
-		return VersionComparator::isLower( $this, $version );
-	}
-
-	public static function parse( string $versionString ): Version
-	{
-		return VersionParser::parse( $versionString );
-	}
-
-	public function render(): string
-	{
-		return VersionRenderer::render( $this );
-	}
-
-	public function setMajor( int $major ): self
-	{
-		$this->major	= $major;
-		return $this;
-	}
-
-	public function setMinor( int $minor ): self
-	{
-		$this->minor	= $minor;
-		return $this;
-	}
-
-	public function setPatch( int $patch ): self
-	{
-		$this->patch	= $patch;
-		return $this;
-	}
-
-	public function setPreRelease( string $preRelease ): self
-	{
-		$this->preRelease	= $preRelease;
-		return $this;
-	}
-
-	public function setBuild( int $build ): self
-	{
-		$this->build	= $build;
-		return $this;
 	}
 
 	public function incrementMajor(): self
@@ -162,6 +92,36 @@ class Version
 //		) ) );
 	}
 
+	public function isAtLeast( Version $version ): bool
+	{
+		return VersionComparator::isAtLeast( $this, $version );
+	}
+
+	public function isAtMost( Version $version ): bool
+	{
+		return VersionComparator::isAtMost( $this, $version );
+	}
+
+	public function isDifferentFrom( Version $version ): bool
+	{
+		return VersionComparator::differs( $this, $version );
+	}
+
+	public function isEqualTo( Version $version ): bool
+	{
+		return VersionComparator::equals( $this, $version );
+	}
+
+	public function isGreaterThan( Version $version ): bool
+	{
+		return VersionComparator::isGreater( $this, $version );
+	}
+
+	public function isLowerThan( Version $version ): bool
+	{
+		return VersionComparator::isLower( $this, $version );
+	}
+
 	public function isPublic(): bool
 	{
 		return $this->major > 0;
@@ -171,4 +131,50 @@ class Version
 	{
 		return $this->isPublic() && $this->preRelease === '';
 	}
+
+	public static function parse( string $versionString ): Version
+	{
+		return VersionParser::parse( $versionString );
+	}
+
+	public function render(): string
+	{
+		return VersionRenderer::render( $this );
+	}
+
+	public function satifies( Constraint $constraint ): self
+	{
+		return $constraint->checkVersion( $this );
+	}
+
+	public function setMajor( int $major ): self
+	{
+		$this->major	= $major;
+		return $this;
+	}
+
+	public function setMinor( int $minor ): self
+	{
+		$this->minor	= $minor;
+		return $this;
+	}
+
+	public function setPatch( int $patch ): self
+	{
+		$this->patch	= $patch;
+		return $this;
+	}
+
+	public function setPreRelease( string $preRelease ): self
+	{
+		$this->preRelease	= $preRelease;
+		return $this;
+	}
+
+	public function setBuild( int $build ): self
+	{
+		$this->build	= $build;
+		return $this;
+	}
+
 }

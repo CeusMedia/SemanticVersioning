@@ -1,7 +1,7 @@
 <?php
-namespace CeusMedia\SemVer\Expression;
+namespace CeusMedia\SemVer\Constraint;
 
-use CeusMedia\SemVer\Expression\Range;
+use CeusMedia\SemVer\Constraint\Range;
 use CeusMedia\SemVer\Version;
 use InvalidArgumentException;
 

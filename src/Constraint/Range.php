@@ -1,5 +1,5 @@
 <?php
-namespace CeusMedia\SemVer\Expression;
+namespace CeusMedia\SemVer\Constraint;
 
 use CeusMedia\SemVer\Version;
 
@@ -10,10 +10,10 @@ class Range
 	protected $greaterThan	= NULL;
 	protected $lowerThan	= NULL;
 
-	public function __construct( string $expression = NULL )
+	public function __construct( string $constraint = NULL )
 	{
-		if( !is_null( $expression ) ){
-			$range	= self::parseExpression( $expression );
+		if( !is_null( $constraint ) ){
+			$range	= self::parseConstraint( $constraint );
 			$this->setAtLeast( $range->getAtLeast() );
 			$this->setAtMost( $range->getAtMost() );
 			$this->setGreaterThan( $range->getGreaterThan() );
@@ -58,20 +58,20 @@ class Range
 		return $this->lowerThan;
 	}
 
-	public static function parseExpression( string $expression ): Range
+	public static function parseConstraint( string $constraint ): Range
 	{
 		$range		= new Range();
-		$version	= $expression;
+		$version	= $constraint;
 		$matches	= array();
-		if( preg_match( '/^(\D+)(\d.*)$/', $expression, $matches ) ){
+		if( preg_match( '/^(\D+)(\d.*)$/', $constraint, $matches ) ){
 			$operator	= $matches[1];
 			$version	= $matches[2];
 //			print( 'Operator: '.$operator.PHP_EOL );
 //			print( 'Version:  '.$version.PHP_EOL );
 			switch( $operator ){
 				case '^':
-					$level	= substr_count( $expression, '.' ) + 1;
-//					print( 'Range->parseExpression: level -> '.$level.PHP_EOL );
+					$level	= substr_count( $constraint, '.' ) + 1;
+//					print( 'Range->parseConstraint: level -> '.$level.PHP_EOL );
 					$range->setAtLeast( new Version( $version ) );
 					$range->setLowerThan( new Version( $version ) );
 					if( $level === 1 )
@@ -95,13 +95,13 @@ class Range
 					break;
 			}
 		}
-		else if( preg_match( '/^(\d.*)-(\d.*)$/', $expression, $matches ) ){
+		else if( preg_match( '/^(\d.*)-(\d.*)$/', $constraint, $matches ) ){
 			$range->setAtLeast( new Version( $matches[1] ) );
 			$range->setAtMost( new Version( $matches[2] ) );
 		}
 		else{
-			$range->setAtLeast( new Version( $expression ) );
-			$range->setAtMost( new Version( $expression ) );
+			$range->setAtLeast( new Version( $constraint ) );
+			$range->setAtMost( new Version( $constraint ) );
 		}
 		return $range;
 	}

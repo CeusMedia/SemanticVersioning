@@ -7,15 +7,24 @@ use CeusMedia\SemVer\Version\Renderer as VersionRenderer;
 
 class Version
 {
+	/** @var	integer */
 	protected $major		= 0;
+
+	/** @var	integer */
 	protected $minor		= 0;
+
+	/** @var	integer */
 	protected $patch		= 0;
+
+	/** @var	string */
 	protected $preRelease	= '';
+
+	/** @var	integer */
 	protected $build		= 0;
 
 	public function __construct( ?string $versionString = NULL )
 	{
-		if( $versionString ){
+		if( $versionString !== NULL && strlen( trim( $versionString ) ) > 0 ){
 			$version	= VersionParser::parse( $versionString );
 			$this->setMajor( $version->getMajor() );
 			$this->setMinor( $version->getMinor() );
@@ -142,7 +151,7 @@ class Version
 		return VersionRenderer::render( $this );
 	}
 
-	public function satifies( Constraint $constraint ): self
+	public function satifies( Constraint $constraint ): bool
 	{
 		return $constraint->checkVersion( $this );
 	}

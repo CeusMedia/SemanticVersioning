@@ -12,10 +12,10 @@ class Renderer
 			$version->getMinor(),
 			$version->getPatch()
 		) );
-		if( $version->getPreRelease() ){
+		if( strlen( $version->getPreRelease() ) > 0 ){
 			$string	.= '-'.$version->getPreRelease();
 		}
-		if( $version->getBuild() ){
+		if( $version->getBuild() > 0 ){
 			$string	.= '+'.$version->getBuild();
 		}
 		return $string;

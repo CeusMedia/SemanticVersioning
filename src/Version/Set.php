@@ -6,11 +6,15 @@ use CeusMedia\SemVer\Version;
 
 class Set
 {
+	/** @var	Version[] */
 	protected $list		= array();
 
+	/**
+	 *	@param		Version[]		$list
+	 */
 	public function __construct( array $list = array() )
 	{
-		if( count( $list ) ){
+		if( count( $list ) > 0 ){
 			foreach( self::fromList( $list )->getList() as $item ){
 				$this->list[]	= $item;
 			}
@@ -33,6 +37,9 @@ class Set
 		return $set;
 	}
 
+	/**
+	 *	@param		array<Version|string>		$list
+	 */
 	public static function fromList( array $list ): Set
 	{
 		$set	= new self();
@@ -46,6 +53,9 @@ class Set
 		return $set;
 	}
 
+	/**
+	 *	@return		Version[]
+	 */
 	public function getList(): array
 	{
 		return $this->list;

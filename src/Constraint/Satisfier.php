@@ -21,10 +21,15 @@ class Satisfier
 		self::STRATEGY_LATEST_MAJOR,
 	];
 
+	/** @var	integer */
 	protected $strategy		= self::STRATEGY_LATEST;
 
-	public static function satisfies( Version $version, Range $range )
+	/**
+	 *	@todo			implement
+	 */
+	public static function satisfies( Version $version, Range $range ): bool
 	{
+		return FALSE;
 	}
 
 	public function getStrategy(): int
@@ -34,7 +39,7 @@ class Satisfier
 
 	public function setStrategy( int $strategy ): self
 	{
-		if( !in_array( $strategy, self::STRATEGIES ) )
+		if( !in_array( $strategy, self::STRATEGIES, TRUE ) )
 			throw new InvalidArgumentException( 'Invalid strategy' );
 		$this->strategy	= $strategy;
 		return $this;

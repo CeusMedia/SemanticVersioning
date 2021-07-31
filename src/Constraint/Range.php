@@ -5,9 +5,16 @@ use CeusMedia\SemVer\Version;
 
 class Range
 {
+	/** @var	Version|NULL */
 	protected $atLeast		= NULL;
+
+	/** @var	Version|NULL */
 	protected $atMost		= NULL;
+
+	/** @var	Version|NULL */
 	protected $greaterThan	= NULL;
+
+	/** @var	Version|NULL */
 	protected $lowerThan	= NULL;
 
 	public function __construct( string $constraint = NULL )
@@ -63,7 +70,7 @@ class Range
 		$range		= new Range();
 		$version	= $constraint;
 		$matches	= array();
-		if( preg_match( '/^(\D+)(\d.*)$/', $constraint, $matches ) ){
+		if( preg_match( '/^(\D+)(\d.*)$/', $constraint, $matches ) !== 0 ){
 			$operator	= $matches[1];
 			$version	= $matches[2];
 //			print( 'Operator: '.$operator.PHP_EOL );
@@ -73,13 +80,14 @@ class Range
 					$level	= substr_count( $constraint, '.' ) + 1;
 //					print( 'Range->parseConstraint: level -> '.$level.PHP_EOL );
 					$range->setAtLeast( new Version( $version ) );
-					$range->setLowerThan( new Version( $version ) );
+					$maxVersion	= new Version( $version );
 					if( $level === 1 )
-						$range->getLowerThan()->incrementMajor();
+						$maxVersion->incrementMajor();
 					else if( $level === 2 )
-						$range->getlowerThan()->incrementMinor();
+						$maxVersion->incrementMinor();
 					else if( $level === 3 )
-						$range->getLowerThan()->incrementPatch();
+						$maxVersion->incrementPatch();
+					$range->setLowerThan( $maxVersion );
 					break;
 				case '>=':
 					$range->setAtLeast( new Version( $version ) );
@@ -95,7 +103,7 @@ class Range
 					break;
 			}
 		}
-		else if( preg_match( '/^(\d.*)-(\d.*)$/', $constraint, $matches ) ){
+		else if( preg_match( '/^(\d.*)-(\d.*)$/', $constraint, $matches ) !== 0 ){
 			$range->setAtLeast( new Version( $matches[1] ) );
 			$range->setAtMost( new Version( $matches[2] ) );
 		}

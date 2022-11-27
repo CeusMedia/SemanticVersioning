@@ -11,10 +11,11 @@ class Parser
 
 	public static function parse( string $versionString ): Version
 	{
-		$matches	= array();
-		if( preg_match( static::$regExp, $versionString, $matches ) === 0 ){
+		if( !self::isValid( $versionString ) )
 			throw new Exception( 'Given string is not a valid SemVer version' );
-		}
+
+		preg_match( static::$regExp, $versionString, $matches );
+
 		$version	= new Version();
 		$version->setMajor( (int) $matches[1] );
 		if( isset( $matches[3] ) )
@@ -26,5 +27,10 @@ class Parser
 		if( isset( $matches[9] ) )
 			$version->setBuild( (int) $matches[9] );
 		return $version;
+	}
+
+	public static function isValid( string $versionString ): bool
+	{
+		return 0 !== preg_match( static::$regExp, $versionString );
 	}
 }

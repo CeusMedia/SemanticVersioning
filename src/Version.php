@@ -4,8 +4,9 @@ namespace CeusMedia\SemVer;
 use CeusMedia\SemVer\Version\Comparator as VersionComparator;
 use CeusMedia\SemVer\Version\Parser as VersionParser;
 use CeusMedia\SemVer\Version\Renderer as VersionRenderer;
+use CeusMedia\Common\Renderable;
 
-class Version
+class Version implements Renderable
 {
 	/** @var	integer */
 	protected $major		= 0;
@@ -22,10 +23,15 @@ class Version
 	/** @var	integer */
 	protected $build		= 0;
 
+	public static function fromString( string $versionString ): self
+	{
+		return VersionParser::parse( $versionString );
+	}
+
 	public function __construct( ?string $versionString = NULL )
 	{
 		if( $versionString !== NULL && strlen( trim( $versionString ) ) > 0 ){
-			$version	= VersionParser::parse( $versionString );
+			$version	= self::fromString( $versionString );
 			$this->setMajor( $version->getMajor() );
 			$this->setMinor( $version->getMinor() );
 			$this->setPatch( $version->getPatch() );
@@ -99,6 +105,13 @@ class Version
 //			$this->minor,
 //			$this->patch + 1
 //		) ) );
+	}
+
+	public function incrementBuild(): self
+	{
+		$this->build		+= 1;
+		$this->preRelease	= '';
+		return $this;
 	}
 
 	public function isAtLeast( Version $version ): bool

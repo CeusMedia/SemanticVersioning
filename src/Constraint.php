@@ -1,40 +1,32 @@
 <?php
 namespace CeusMedia\SemVer;
 
-use CeusMedia\SemVer\Version;
 use CeusMedia\SemVer\Constraint\Range as ConstraintRange;
 
 class Constraint
 {
 	/** @var	string */
-	protected $constraint;
+	protected string $constraint	= '';
 
 	/** @var	Constraint[] */
-	protected $ors				= array();
+	protected array $ors			= [];
 
 	/** @var	Constraint[] */
-	protected $ands				= array();
+	protected array $ands			= [];
 
 	public function __construct( string $constraint )
 	{
 		$constraint	= (string) preg_replace( '/\s*\|\|\s*/', '||', $constraint );
 		$constraint	= (string) preg_replace( '/\s*&&\s*/', '&&', $constraint );
 		$constraint	= (string) preg_replace( '/\s+/', '&&', $constraint );
-		if( preg_match( '/\|\|/', $constraint ) !== 0 ){
-			$splits	= preg_split( '/\|\|/', $constraint );
-			if( $splits !== FALSE )
-				foreach( $splits as $subConstraint )
-					$this->ors[] = new Constraint( $subConstraint );
-		}
-		else if( preg_match( '/&&/', $constraint ) !== 0 ){
-			$splits	= preg_split( '/&&/', $constraint );
-			if( $splits !== FALSE )
-				foreach( $splits as $subConstraint )
-					$this->ands[] = new Constraint( $subConstraint );
-		}
-		else {
+		if( str_contains( $constraint, '||' ) )
+			foreach( explode( '||', $constraint ) as $subConstraint )
+				$this->ors[] = new Constraint( $subConstraint );
+		else if( str_contains( $constraint, '&&' ) )
+			foreach( explode( '&&', $constraint ) as $subConstraint )
+				$this->ands[] = new Constraint( $subConstraint );
+		else
 			$this->constraint	= $constraint;
-		}
 	}
 
 	public function checkVersion( Version $version ): bool
@@ -65,6 +57,9 @@ class Constraint
 		return $this->ands;
 	}
 
+	/**
+	 *	@return		string
+	 */
 	public function getConstraint(): string
 	{
 		return $this->constraint;

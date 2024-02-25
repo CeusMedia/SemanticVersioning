@@ -7,7 +7,7 @@ use CeusMedia\SemVer\Exception;
 class Parser
 {
 	/** @var	string */
-	protected static $regExp	= '/^v?(\d+)(\.(\d+))?(\.(\d+))?(-([^+]+))?(\+(.+))?$/u';
+	protected static string $regExp	= '/^v?(\d+)(\.(\d+))?(\.(\d+))?(-([^+]+))?(\+(.+))?$/u';
 
 	public static function parse( string $versionString ): Version
 	{

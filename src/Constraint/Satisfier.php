@@ -22,7 +22,7 @@ class Satisfier
 	];
 
 	/** @var	integer */
-	protected $strategy		= self::STRATEGY_LATEST;
+	protected int $strategy		= self::STRATEGY_LATEST;
 
 	/**
 	 *	@todo			implement

@@ -18,16 +18,62 @@
         "jabber": "cwuerker@ceusmedia.de"
     },
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "php": "^8.1"
+    },
     "require-dev": {
         "phpunit/phpunit": "*",
         "phpstan/phpstan": "*",
-        "phpstan/phpstan-strict-rules": "^0.12.0@dev",
+        "phpstan/phpstan-strict-rules": "*",
         "vimeo/psalm": "^4.0@dev"
     },
     "autoload": {
         "psr-4": {
-            "CeusMedia\\SemVer\\": "src"
+            "CeusMedia\\SemVer\\": "src",
+            "CeusMedia\\SemVerTest\\": "test"
         }
+    },
+    "scripts": {
+        "dev:install-quiet": "composer install --ignore-platform-reqs --quiet",
+        "dev:update-quiet": "composer update --ignore-platform-reqs --quiet",
+        "dev:stan": [
+            "@dev:install-quiet",
+            "XDEBUG_MODE=off vendor/bin/phpstan analyze --configuration=config/phpstan.neon --memory-limit=1G --verbose"
+        ],
+        "dev:stan-clear": [
+            "@dev:install-quiet",
+            "XDEBUG_MODE=off vendor/bin/phpstan clear-result-cache --configuration=config/phpstan.neon --verbose"
+        ],
+        "dev:stan-save": [
+            "@dev:install-quiet",
+            "XDEBUG_MODE=off vendor/bin/phpstan analyse --configuration=config/phpstan.neon --generate-baseline config/phpstan-baseline.neon --verbose"
+        ],
+        "dev:rector": [
+            "@dev:install-quiet",
+            "vendor/bin/rector process --config=config/rector.php --dry-run"
+        ],
+        "dev:rector-fix": [
+            "@dev:install-quiet",
+            "vendor/bin/rector process --config=config/rector.php"
+        ],
+        "dev:test-syntax": [
+            "@dev:install-quiet",
+            "vendor/bin/parallel-lint classes -j 10 --colors --exclude vendor"
+        ],
+        "dev:test-units": [
+            "@dev:install-quiet",
+            "XDEBUG_MODE=coverage php vendor/bin/phpunit --configuration config/phpunit.xml --testsuite default"
+        ]
+    },
+    "scripts-descriptions": {
+        "dev:install": "Installs project dependencies for Development stage",
+        "dev:update": "Updates project dependencies for Development stage",
+        "dev:stan": "Validate codebase with PHPStan",
+        "dev:stan-clear": "Clear PHPStan cache",
+        "dev:stan-save": "Store current results in ignore list",
+        "dev:rector": "Shows suggestions of configured Rector rules",
+        "dev:rector-fix": "Apply currently configured Rector rules to codebase",
+        "dev:test-syntax": "Validate code base syntax using PHP linter",
+        "dev:test-units": "Run unit tests"
     }
 }

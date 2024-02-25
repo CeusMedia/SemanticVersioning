@@ -3,16 +3,17 @@ namespace CeusMedia\SemVer\Version;
 
 use CeusMedia\SemVer\Constraint;
 use CeusMedia\SemVer\Version;
+use InvalidArgumentException;
 
 class Set
 {
 	/** @var	Version[] */
-	protected $list		= array();
+	protected array $list		= [];
 
 	/**
 	 *	@param		Version[]		$list
 	 */
-	public function __construct( array $list = array() )
+	public function __construct( array $list = [] )
 	{
 		if( count( $list ) > 0 ){
 			foreach( self::fromList( $list )->getList() as $item ){
@@ -47,7 +48,7 @@ class Set
 			if( is_string( $version ) )
 				$version	= new Version( $version );
 			if( !( $version instanceof Version ) )
-				throw new \InvalidArgumentException( 'List item is neither a version not a string' );
+				throw new InvalidArgumentException( 'List item is neither a version not a string' );
 			$set->add( $version );
 		}
 		return $set;

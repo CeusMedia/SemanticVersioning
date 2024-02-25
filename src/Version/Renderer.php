@@ -7,17 +7,15 @@ class Renderer
 {
 	public static function render( Version $version ): string
 	{
-		$string	= vsprintf( '%d.%d.%d', array(
+		$string	= vsprintf( '%d.%d.%d', [
 			$version->getMajor(),
 			$version->getMinor(),
 			$version->getPatch()
-		) );
-		if( strlen( $version->getPreRelease() ) > 0 ){
+		] );
+		if( 0 !== strlen( $version->getPreRelease() ) )
 			$string	.= '-'.$version->getPreRelease();
-		}
-		if( $version->getBuild() > 0 ){
+		if( $version->getBuild() > 0 )
 			$string	.= '+'.$version->getBuild();
-		}
 		return $string;
 	}
 }

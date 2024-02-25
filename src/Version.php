@@ -4,24 +4,24 @@ namespace CeusMedia\SemVer;
 use CeusMedia\SemVer\Version\Comparator as VersionComparator;
 use CeusMedia\SemVer\Version\Parser as VersionParser;
 use CeusMedia\SemVer\Version\Renderer as VersionRenderer;
-use CeusMedia\Common\Renderable;
+use Stringable;
 
-class Version implements Renderable
+class Version implements Stringable
 {
 	/** @var	integer */
-	protected $major		= 0;
+	protected int $major		= 0;
 
 	/** @var	integer */
-	protected $minor		= 0;
+	protected int $minor		= 0;
 
 	/** @var	integer */
-	protected $patch		= 0;
+	protected int $patch		= 0;
 
 	/** @var	string */
-	protected $preRelease	= '';
+	protected string $preRelease	= '';
 
 	/** @var	integer */
-	protected $build		= 0;
+	protected int $build		= 0;
 
 	public static function fromString( string $versionString ): self
 	{

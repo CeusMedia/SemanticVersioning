@@ -1,60 +1,62 @@
 <?php
+namespace CeusMedia\SemVerTest;
+
 use CeusMedia\SemVer\Constraint;
 use CeusMedia\SemVer\Version;
 use PHPUnit\Framework\TestCase;
 
 /**
- *	@coversDefaultClass		CeusMedia\SemVer\Constraint
+ *	@coversDefaultClass		\CeusMedia\SemVer\Constraint
  */
 class ConstraintTest extends TestCase
 {
 	/**
 	 *	@covers		::checkVersion
 	 */
-	public function testCheckVersion()
+	public function testCheckVersion(): void
 	{
 		$e	= new Constraint( '^1 >=1.2.3 <=1.2.5' );
-		$this->assertFalse( $e->checkVersion( new Version( '1' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '1.2.3' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '1.2.4' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '1.2.5' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '1.2.6' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1.2.3' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1.2.4' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1.2.5' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1.2.6' ) ) );
 
 		$e	= new Constraint( '^1 >1.2.3 <1.2.5' );
-		$this->assertFalse( $e->checkVersion( new Version( '1' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '1.2.3' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '1.2.4' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '1.2.5' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '1.2.6' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1.2.3' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1.2.4' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1.2.5' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1.2.6' ) ) );
 
 		$e	= new Constraint( '>=1 <=3' );
-		$this->assertFalse( $e->checkVersion( new Version( '0.9' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '1' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '2' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '2.1' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '3' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '3.1' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '0.9' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '2' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '2.1' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '3' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '3.1' ) ) );
 
 		$e	= new Constraint( '>1 <3' );
-		$this->assertFalse( $e->checkVersion( new Version( '0.9' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '1' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '2' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '2.1' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '3' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '3.1' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '0.9' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '1' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '2' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '2.1' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '3' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '3.1' ) ) );
 
 		$e	= new Constraint( '<=2 || >=4' );
-		$this->assertTrue( $e->checkVersion( new Version( '1' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '2' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '3' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '4' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '5' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '2' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '3' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '4' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '5' ) ) );
 
 		$e	= new Constraint( '<2 || >4' );
-		$this->assertTrue( $e->checkVersion( new Version( '1' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '2' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '3' ) ) );
-		$this->assertFalse( $e->checkVersion( new Version( '4' ) ) );
-		$this->assertTrue( $e->checkVersion( new Version( '5' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '1' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '2' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '3' ) ) );
+		self::assertFalse( $e->checkVersion( new Version( '4' ) ) );
+		self::assertTrue( $e->checkVersion( new Version( '5' ) ) );
 	}
 }

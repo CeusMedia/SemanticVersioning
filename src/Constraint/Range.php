@@ -6,16 +6,16 @@ use CeusMedia\SemVer\Version;
 class Range
 {
 	/** @var	Version|NULL */
-	protected $atLeast		= NULL;
+	protected ?Version $atLeast		= NULL;
 
 	/** @var	Version|NULL */
-	protected $atMost		= NULL;
+	protected ?Version $atMost		= NULL;
 
 	/** @var	Version|NULL */
-	protected $greaterThan	= NULL;
+	protected ?Version $greaterThan	= NULL;
 
 	/** @var	Version|NULL */
-	protected $lowerThan	= NULL;
+	protected ?Version $lowerThan	= NULL;
 
 	public function __construct( string $constraint = NULL )
 	{

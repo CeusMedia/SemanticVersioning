@@ -1,6 +1,8 @@
 <?php
 namespace CeusMedia\SemVer;
 
-class Exception extends \InvalidArgumentException
+use InvalidArgumentException;
+
+class Exception extends InvalidArgumentException
 {
 }

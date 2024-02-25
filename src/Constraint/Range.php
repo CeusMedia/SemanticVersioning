@@ -1,6 +1,7 @@
 <?php
 namespace CeusMedia\SemVer\Constraint;
 
+use CeusMedia\SemVer\Constraint\Range\Parser;
 use CeusMedia\SemVer\Version;
 
 class Range
@@ -17,10 +18,15 @@ class Range
 	/** @var	Version|NULL */
 	protected ?Version $lowerThan	= NULL;
 
+	public static function create( ?string $constraint = NULL ): self
+	{
+		return new self( $constraint );
+	}
+
 	public function __construct( string $constraint = NULL )
 	{
 		if( !is_null( $constraint ) ){
-			$range	= self::parseConstraint( $constraint );
+			$range	= Parser::parse( $constraint );
 			$this->setAtLeast( $range->getAtLeast() );
 			$this->setAtMost( $range->getAtMost() );
 			$this->setGreaterThan( $range->getGreaterThan() );
@@ -28,8 +34,9 @@ class Range
 		}
 	}
 
-	public function checkVersion( Version $version ): bool
+	public function checkVersion( Version|string $version ): bool
 	{
+		$version	= is_string( $version ) ? new Version( $version ) : $version;
 		if( !is_null( $this->atLeast ) && !is_null( $this->atMost ) ){
 			if( $this->atLeast->render() === $this->atMost->render() && !$version->isEqualTo( $this->atLeast ) )
 				return FALSE;
@@ -65,76 +72,37 @@ class Range
 		return $this->lowerThan;
 	}
 
+	/**
+	 *	@param		string		$constraint
+	 *	@return		Range
+	 *	@deprecated	use Parser::parse instead
+	 */
 	public static function parseConstraint( string $constraint ): Range
 	{
-		$range		= new Range();
-		$version	= $constraint;
-		$matches	= array();
-		if( preg_match( '/^(\D+)(\d.*)$/', $constraint, $matches ) !== 0 ){
-			$operator	= $matches[1];
-			$version	= $matches[2];
-//			print( 'Operator: '.$operator.PHP_EOL );
-//			print( 'Version:  '.$version.PHP_EOL );
-			switch( $operator ){
-				case '^':
-					$level	= substr_count( $constraint, '.' ) + 1;
-//					print( 'Range->parseConstraint: level -> '.$level.PHP_EOL );
-					$range->setAtLeast( new Version( $version ) );
-					$maxVersion	= new Version( $version );
-					if( $level === 1 )
-						$maxVersion->incrementMajor();
-					else if( $level === 2 )
-						$maxVersion->incrementMinor();
-					else if( $level === 3 )
-						$maxVersion->incrementPatch();
-					$range->setLowerThan( $maxVersion );
-					break;
-				case '>=':
-					$range->setAtLeast( new Version( $version ) );
-					break;
-				case '<=':
-					$range->setAtMost( new Version( $version ) );
-					break;
-				case '>':
-					$range->setGreaterThan( new Version( $version ) );
-					break;
-				case '<':
-					$range->setLowerThan( new Version( $version ) );
-					break;
-			}
-		}
-		else if( preg_match( '/^(\d.*)-(\d.*)$/', $constraint, $matches ) !== 0 ){
-			$range->setAtLeast( new Version( $matches[1] ) );
-			$range->setAtMost( new Version( $matches[2] ) );
-		}
-		else{
-			$range->setAtLeast( new Version( $constraint ) );
-			$range->setAtMost( new Version( $constraint ) );
-		}
-		return $range;
+		return Parser::parse( $constraint );
 	}
 
-	public function setAtLeast( ?Version $version ): self
+	public function setAtLeast( Version|string|NULL $version ): self
 	{
-		$this->atLeast	= $version;
+		$this->atLeast	= is_string( $version ) ? new Version( $version ) : $version;
 		return $this;
 	}
 
-	public function setAtMost( ?Version $version ): self
+	public function setAtMost( Version|string|NULL $version ): self
 	{
-		$this->atMost	= $version;
+		$this->atMost	= is_string( $version ) ? new Version( $version ) : $version;
 		return $this;
 	}
 
-	public function setGreaterThan( ?Version $version ): self
+	public function setGreaterThan( Version|string|NULL $version ): self
 	{
-		$this->greaterThan	= $version;
+		$this->greaterThan	= is_string( $version ) ? new Version( $version ) : $version;
 		return $this;
 	}
 
-	public function setLowerThan( ?Version $version ): self
+	public function setLowerThan( Version|string|NULL $version ): self
 	{
-		$this->lowerThan	= $version;
+		$this->lowerThan	= is_string( $version ) ? new Version( $version ) : $version;
 		return $this;
 	}
 }

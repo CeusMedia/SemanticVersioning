@@ -1,35 +1,31 @@
 <?php
 namespace CeusMedia\SemVer;
 
+use CeusMedia\SemVer\Constraint\Parser as ConstraintParser;
 use CeusMedia\SemVer\Constraint\Range as ConstraintRange;
 
 class Constraint
 {
 	/** @var	string */
-	protected string $constraint	= '';
+	public string $constraint	= '';
 
 	/** @var	Constraint[] */
-	protected array $ors			= [];
+	public array $ors			= [];
 
 	/** @var	Constraint[] */
-	protected array $ands			= [];
+	public array $ands			= [];
 
-	public function __construct( string $constraint )
+	public function __construct( ?string $constraint = NULL )
 	{
-		$constraint	= (string) preg_replace( '/\s*\|\|\s*/', '||', $constraint );
-		$constraint	= (string) preg_replace( '/\s*&&\s*/', '&&', $constraint );
-		$constraint	= (string) preg_replace( '/\s+/', '&&', $constraint );
-		if( str_contains( $constraint, '||' ) )
-			foreach( explode( '||', $constraint ) as $subConstraint )
-				$this->ors[] = new Constraint( $subConstraint );
-		else if( str_contains( $constraint, '&&' ) )
-			foreach( explode( '&&', $constraint ) as $subConstraint )
-				$this->ands[] = new Constraint( $subConstraint );
-		else
-			$this->constraint	= $constraint;
+		if( NULL !== $constraint ){
+			$object	= ConstraintParser::parse( $constraint );
+			$this->ors			= $object->ors;
+			$this->ands			= $object->ands;
+			$this->constraint	= $object->constraint;
+		}
 	}
 
-	public function checkVersion( Version $version ): bool
+	public function checkVersion( Version|string $version ): bool
 	{
 		if( count( $this->ands ) > 0 ){
 			$valid	= TRUE;
